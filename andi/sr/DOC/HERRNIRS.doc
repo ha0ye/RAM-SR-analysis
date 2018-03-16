@@ -1,0 +1,59 @@
+ID        @ HERRNIRS
+SP        @ Herring
+LATIN     @ Clupea harengus
+FAMILY    @ Clupeidae
+CFAMILY   @ Herrings
+ORDER     @ Clupeiformes
+STOCK     @ Northern Irish Sea 
+SOURCE    @ Anon. 1988. Report of the Herring Assessment Working Group for the Area South of 62N. ICES Doc. C.M. 1988/17.; Anon. 1991. Report of the Herring Assessment Working Group for the Area South of 62N. ICES Doc. C.M. 1990/Assess: 14.; Anon. 1991. Report of the Herring Assessment Working Group for the Area South of 62N. ICES C.M. 1991/Assess: 5.; Anon. 1992. Report of the Herring Assessment Working Group for the Area South of 62N. ICES C.M. 1992/Assess: 11.
+COMMENTS  @ SPA, 1 year olds in (000's)
+FAGE      @ .
+METHOD    @ SPA
+UNITSSB   @ Tonnes
+UNITREC   @ Millions
+AGERECDAT @ 1
+UNITLAND  @ Tonnes
+EGGDIAM   @ 1.26
+LHATCH    @ 7 
+LMETA     @ 30 
+DELTAL    @ 23 
+DELTAN    @ 18 
+LATITUDE  @ 54 05
+LONGITUDE @ -4 29
+MONTHSPA  @ . 
+NATMORT   @ . 
+F01       @ 0.17 
+FMAX      @ . 
+FMED      @ 0.38 
+KGPRECF0  @ 0.54
+SPAWNLOC  @ . 
+EGGTYPE   @ . 
+FEEDTYPE  @ . 
+SOURCEMAT @ . 
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ . 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ . 

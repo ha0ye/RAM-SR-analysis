@@ -1,0 +1,59 @@
+ID        @ HADFAPL
+SP        @ Haddock
+LATIN     @ Melanogrammus aeglefinus
+FAMILY    @ Gadidae
+CFAMILY   @ Codfishes
+ORDER     @ Gadiformes
+STOCK     @ Faroe Plateau
+SOURCE    @ Anon. 1987. Report of the North-Western Working Group. ICES Doc. C.M. 1987/Assess: 2.; Anon. 1990. Report of the Working Group on Cod off East Greenland. ICES Doc. C.M. 1990/Assess: 20.; Anon. 1991. Report of the North-Western Working Group. ICES Doc. C.M. 1991/Assess: 21.
+COMMENTS  @ SPA, 1 year olds in actual numbers
+FAGE      @ 4-8
+METHOD    @ SPA
+UNITSSB   @ Tonnes
+UNITREC   @ Thousands
+AGERECDAT @ 2
+UNITLAND  @ Tonnes
+EGGDIAM   @ 1.43 
+LHATCH    @ 4 
+LMETA     @ 28 
+DELTAL    @ 24 
+DELTAN    @ 16.4 
+LATITUDE  @ 62 00
+LONGITUDE @ -8 00
+MONTHSPA  @ 1-7 
+NATMORT   @ 0.20 
+F01       @ 0.22 
+FMAX      @ . 
+FMED      @ . 
+KGPRECF0  @ 6.69
+SPAWNLOC  @ . 
+EGGTYPE   @ Oviparous, pelagic 
+FEEDTYPE  @ Demersal, 27-366m 
+SOURCEMAT @ . 
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ 3.5 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ . 

@@ -1,0 +1,59 @@
+ID        @ COHOBLCK
+SP        @ Coho salmon
+LATIN     @ Oncorhynchus kisutch
+FAMILY    @ Salmonidae
+CFAMILY   @ Salmons
+ORDER     @ Salmoniformes
+STOCK     @ Black Creek, British Columbia
+SOURCE    @ Can. Manuscr. Rep. Fish. Aquat. Sci. 2206, also  Jim Irvine (DFO,PBS), recent data from eter Tchaplinski, BC Min. Forests pers. Com. Sept. 1997. 
+COMMENTS  @ 33.00 km river length, Adults estimated by intensive fence+mark-recapture. SE's for adults are available. Smolts are normally 90%+ age 1. Age 2 smolts are included here, by brood year. Smolts enumerated at fence. 
+FAGE      @ .
+METHOD    @ Count and Mark-Recapture
+UNITSSB   @ Females 
+UNITREC   @ Smolts
+AGERECDAT @ 1.06 
+UNITLAND  @ . 
+EGGDIAM   @ . 
+LHATCH    @ . 
+LMETA     @ . 
+DELTAL    @ . 
+DELTAN    @ . 
+LATITUDE  @ 49 52
+LONGITUDE @ -125 06
+MONTHSPA  @ . 
+NATMORT   @ . 
+F01       @ . 
+FMAX      @ . 
+FMED      @ . 
+KGPRECF0  @ .
+SPAWNLOC  @ . 
+EGGTYPE   @ . 
+FEEDTYPE  @ . 
+SOURCEMAT @ . 
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ . 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ .

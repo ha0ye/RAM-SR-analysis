@@ -1,0 +1,59 @@
+ID        @ AMPL3M
+SP        @ American plaice
+LATIN     @ Hippoglossoides platessoides
+FAMILY    @ Pleuronectidae
+CFAMILY   @ Righteye flounders
+ORDER     @ Pleuronectiformes
+STOCK     @ Flemish Cap (NAFO Div. 3M)
+SOURCE    @ E. de C\'{a}rdenas. 1997. An assessment on American plaice in Division 3M.  NAFO SCR Doc. 97/45
+COMMENTS  @ .
+FAGE      @ .
+METHOD    @ RV
+UNITSSB   @ Index
+UNITREC   @ Index
+AGERECDAT @ 2
+UNITLAND  @ Tonnes
+EGGDIAM   @ 2.15 
+LHATCH    @ . 
+LMETA     @ . 
+DELTAL    @ . 
+DELTAN    @ .
+LATITUDE  @ 47 00
+LONGITUDE @ -45 00
+MONTHSPA  @ . 
+NATMORT   @ . 
+F01       @ . 
+FMAX      @ . 
+FMED      @ . 
+KGPRECF0  @ .
+SPAWNLOC  @ .
+EGGTYPE   @ . 
+FEEDTYPE  @ .
+SOURCEMAT @ .
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ .
+AGEMAT    @ 5 
+AGEMATM   @ .
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ . 

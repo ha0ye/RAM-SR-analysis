@@ -1,0 +1,59 @@
+ID        @ BLUEFISH
+SP        @ Bluefish
+LATIN     @ Pomatomus saltatrix
+FAMILY    @ Pomatomidae
+CFAMILY   @ Bluefishes
+ORDER     @ Perciformes
+STOCK     @ East Coast, USA
+SOURCE    @ 23th Northeast Regional Stock Assessment Workshop, NMFS, Woods Hole, Northeast Fisheries Science Ceter Referce Document 97-05
+COMMENTS  @ .
+FAGE      @ 1 
+METHOD    @ SPA
+UNITSSB   @ Tonnes
+UNITREC   @ Millions 
+AGERECDAT @ 0
+UNITLAND  @ Tonnes
+EGGDIAM   @ . 
+LHATCH    @ . 
+LMETA     @ . 
+DELTAL    @ . 
+DELTAN    @ . 
+LATITUDE  @ 34 00
+LONGITUDE @ -76 00
+MONTHSPA  @ 3-8 
+NATMORT   @ 0.25 
+F01       @ 0.31 
+FMAX      @ 0.47 
+FMED      @ . 
+KGPRECF0  @ 9.0145 
+SPAWNLOC  @ Shelf 
+EGGTYPE   @ . 
+FEEDTYPE  @ . 
+SOURCEMAT @ .
+LENMAT    @ .
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ 1.5 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ .
+toM       @ . 
+LINFINF   @ .
+kF        @ .  
+toF       @ .  
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ . 

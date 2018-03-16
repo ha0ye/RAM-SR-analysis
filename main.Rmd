@@ -1,0 +1,444 @@
+---
+title: "RAM_SR_analysis"
+author: "Hao Ye"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  pdf_document:
+    toc: true
+  html_document:
+    toc: true
+    css: styles.css
+---
+# Setup
+
+Load in the packages we need and the analysis functions.
+
+```{r setup, message = FALSE}
+library(rEDM)
+library(parallel)
+library(quantreg)
+
+source("my_functions.R")
+```
+
+# Pre-processing
+
+Read the data and documentation from the RAM database website.
+
+```{r download data, eval = FALSE}
+extract_data() # pull data from RAM website
+process_data() # process SR data
+summarize_data()
+```
+
+Check overlap between web files and zip file from Steve.
+
+```{r data validation, eval = FALSE}
+get_doc_info()
+load("stock_ids.Rdata")
+both <- intersect(andi_stock_ids, web_stock_ids)
+a_not_w <- setdiff(andi_stock_ids, web_stock_ids)
+w_not_a <- setdiff(web_stock_ids, andi_stock_ids)
+```
+
+# Analysis
+
+Do univariate analysis. For each stock, do simplex and s-map, find whether AR-0 or AR-1 fits better using AICc, compute simplex and s-map for 1000 AR surrogates.
+
+```{r run analysis, eval = FALSE}
+run_univariate_analysis()
+append_univariate_analysis()
+```
+
+```{r collate results, warning = FALSE}
+load("sr_results.Rdata")
+
+results <- do.call(rbind, lapply(sr_results, function(x) {
+    if(class(x) == "try-error")
+        return(NA)
+    
+    # pull out EDM performance
+    simplex_temp <- x$simplex_out[x$simplex_out$tp == 1,]
+    smap_temp <- x$smap_out[x$smap_out$tp == 1,]
+    n <- sum(is.finite(x$rec))
+    best_E <- x$best_E
+    simplex_rho <- simplex_temp$rho[simplex_temp$E == best_E]
+    simplex_mae <- simplex_temp$mae[simplex_temp$E == best_E]
+    smap_rho <- max(smap_temp$rho)
+    smap_mae <- min(smap_temp$mae)
+    
+    # compute AR performance
+    if(x$ar_0$aicc < x$ar_1$aicc)
+    {
+        ar_pred <- x$rec - x$ar_0$residuals
+    } else {
+        ar_pred <- x$rec - x$ar_1$residuals
+    }
+    ar_rho <- cor(x$rec, ar_pred, use = "pairwise")
+    ar_mae <- mean(abs(x$rec - ar_pred), na.rm = TRUE)
+    
+    # compute EDM p-values
+    simplex_rho_p <- (sum(simplex_rho < x$simplex_null$rho)+1) / (NROW(x$simplex_null) + 1)
+    smap_rho_p <- (sum(smap_rho < x$smap_null$rho)+1) / (NROW(x$smap_null) + 1)
+    simplex_mae_p <- (sum(simplex_mae > x$simplex_null$mae)+1) / (NROW(x$simplex_null) + 1)
+    smap_mae_p <- (sum(smap_mae > x$smap_null$mae)+1) / (NROW(x$smap_null) + 1)
+    
+    return(data.frame(n = n, 
+                      simplex_rho = simplex_rho, 
+                      simplex_mae = simplex_mae, 
+                      smap_rho = smap_rho, 
+                      smap_mae = smap_mae, 
+                      ar_rho = ar_rho, 
+                      ar_mae = ar_mae, 
+                      simplex_rho_p = simplex_rho_p, 
+                      smap_rho_p = smap_rho_p))
+}))
+```
+
+# Plots
+
+## Determine how predictability changes with data length.
+
+```{r plot simplex predictability vs. data length, fig.width = 8, echo = FALSE, results = "hide"}
+par(mar = c(4, 4, 1, 1), mgp = c(2.5, 1, 0), mfrow = c(1, 2))
+plot(results$n, results$simplex_rho, xlab = "Data Length", ylab = "Forecast Skill (simplex rho)")
+quant_reg <- rq(simplex_rho ~ n, data = results, tau = c(0.1, 0.5, 0.9))
+abline(quant_reg$coefficients[,1], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,2], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,3], lty = 2, col = "blue")
+
+plot(results$n, results$simplex_mae, xlab = "Data Length", ylab = "Forecast Error (simplex MAE)")
+quant_reg <- rq(simplex_mae ~ n, data = results, tau = c(0.1, 0.5, 0.9))
+abline(quant_reg$coefficients[,1], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,2], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,3], lty = 2, col = "blue")
+```
+
+```{r plot smap predictability vs. data length, fig.width = 8, echo = FALSE, results = "hide"}
+par(mar = c(4, 4, 1, 1), mgp = c(2.5, 1, 0), mfrow = c(1, 2))
+plot(results$n, results$smap_rho, xlab = "Data Length", ylab = "Forecast Skill (s-map rho)")
+quant_reg <- rq(smap_rho ~ n, data = results, tau = c(0.1, 0.5, 0.9))
+abline(quant_reg$coefficients[,1], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,2], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,3], lty = 2, col = "blue")
+
+plot(results$n, results$smap_mae, xlab = "Data Length", ylab = "Forecast Error (s-map MAE)")
+quant_reg <- rq(smap_mae ~ n, data = results, tau = c(0.1, 0.5, 0.9))
+abline(quant_reg$coefficients[,1], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,2], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,3], lty = 2, col = "blue")
+```
+
+## Comparisons of EDM performance vs. AR models
+
+```{r plot simplex rho vs. AR rho, echo = FALSE, results = "hide"}
+idx_1 <- results$n < 20
+idx_2 <- (20 <= results$n) & (results$n < 30)
+idx_3 <- (30 <= results$n) & (results$n < 40)
+idx_4 <- 40 <= results$n
+
+make_panel <- function(idx, plot_title = "", 
+                      x_var = "ar_rho", y_var = "simplex_rho")
+{
+    x <- results[idx, x_var]
+    y <- results[idx, y_var]
+    limits <- range(c(x, y), na.rm = TRUE)
+    plot(x, y, 
+         xlim = limits, ylim = limits, 
+         xlab = "", ylab = "", 
+         main = plot_title)
+    abline(a = 0, b = 1, lty = 2, col = "blue")
+    return()
+}
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20")
+make_panel(idx_2, "20 <= Length 30")
+make_panel(idx_3, "30 <= Length < 40")
+make_panel(idx_4, "40 <= Length")
+
+mtext("AR forecast skill (rho)", side = 1, outer = TRUE)
+mtext("Simplex forecast skill (rho)", side = 2, outer = TRUE)
+```
+
+```{r plot simplex mae vs. AR mae, echo = FALSE, results = "hide"}
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar_mae", y_var = "simplex_mae")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar_mae", y_var = "simplex_mae")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar_mae", y_var = "simplex_mae")
+make_panel(idx_4, "40 <= Length", x_var = "ar_mae", y_var = "simplex_mae")
+
+mtext("AR forecast error (MAE)", side = 1, outer = TRUE)
+mtext("Simplex forecast error (MAE)", side = 2, outer = TRUE)
+```
+
+```{r plot s-map rho vs. AR rho, echo = FALSE, results = "hide"}
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar_rho", y_var = "smap_rho")
+
+mtext("AR forecast error (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast error (rho)", side = 2, outer = TRUE)
+```
+
+```{r plot s-map mae vs. AR mae, echo = FALSE, results = "hide"}
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar_mae", y_var = "smap_mae")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar_mae", y_var = "smap_mae")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar_mae", y_var = "smap_mae")
+make_panel(idx_4, "40 <= Length", x_var = "ar_mae", y_var = "smap_mae")
+
+mtext("AR forecast error (MAE)", side = 1, outer = TRUE)
+mtext("S-map forecast error (MAE)", side = 2, outer = TRUE)
+```
+
+## P-values (probability that recruitment can be modeled using AR)
+
+```{r plot p-values vs. data length, fig.width = 8, echo = FALSE, results = "hide"}
+par(mar = c(4, 4, 1, 1), mgp = c(2.5, 1, 0), mfrow = c(1, 2))
+plot(results$n, results$simplex_rho_p, xlab = "Data Length", ylab = "P-value (simplex rho)")
+quant_reg <- rq(simplex_rho_p ~ n, data = results, tau = c(0.1, 0.5, 0.9))
+abline(quant_reg$coefficients[,1], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,2], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,3], lty = 2, col = "blue")
+
+plot(results$n, results$smap_rho_p, xlab = "Data Length", ylab = "Forecast Skill (smap rho)")
+quant_reg <- rq(smap_rho_p ~ n, data = results, tau = c(0.1, 0.5, 0.9))
+abline(quant_reg$coefficients[,1], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,2], lty = 2, col = "blue")
+abline(quant_reg$coefficients[,3], lty = 2, col = "blue")
+```
+
+# Plots (part 2)
+
+## Comparisons of EDM performance vs. AR models (2-, 3-, 4-step ahead forecasts)
+
+```{r compile results 2, echo = "FALSE"}
+
+get_results <- function(selected_tp = 2)
+{
+    return(do.call(rbind, lapply(sr_results, function(x) {
+        if(class(x) == "try-error")
+            return(NA)
+        
+        # pull out EDM performance
+        simplex_temp <- x$simplex_out[x$simplex_out$tp == selected_tp,]
+        smap_temp <- x$smap_out[x$smap_out$tp == selected_tp,]
+        n <- sum(is.finite(x$rec))
+        best_E <- x$best_E
+        simplex_rho <- simplex_temp$rho[simplex_temp$E == best_E]
+        simplex_mae <- simplex_temp$mae[simplex_temp$E == best_E]
+        smap_rho <- max(smap_temp$rho)
+        smap_mae <- min(smap_temp$mae)
+        ar1_rho <- x$ar1_out$rho[x$ar1_out$tp == selected_tp]
+        ar1_mae <- x$ar1_out$mae[x$ar1_out$tp == selected_tp]
+        
+        return(data.frame(n = n, 
+                          simplex_rho = simplex_rho, 
+                          simplex_mae = simplex_mae, 
+                          smap_rho = smap_rho, 
+                          smap_mae = smap_mae, 
+                          ar1_rho = ar1_rho, 
+                          ar1_mae = ar1_mae))
+    })))
+}
+```
+
+```{r plot tp 2 simplex vs. AR, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 2)
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar1_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar1_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar1_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar1_rho")
+
+mtext("AR-1 forecast skill (rho)", side = 1, outer = TRUE)
+mtext("Simplex forecast skill (rho)", side = 2, outer = TRUE)
+mtext("2-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 2 s-map vs. AR, fig.width = 8, echo = FALSE, results = "hide"}
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar1_rho", y_var = "smap_rho")
+
+mtext("AR-1 forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("2-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 3 simplex vs. AR, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 3)
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 3, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar1_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar1_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar1_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar1_rho")
+
+mtext("AR-1 forecast skill (rho)", side = 1, outer = TRUE)
+mtext("Simplex forecast skill (rho)", side = 2, outer = TRUE)
+mtext("3-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 3 s-map vs. AR, fig.width = 8, echo = FALSE, results = "hide"}
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar1_rho", y_var = "smap_rho")
+
+mtext("AR-1 forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("3-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 4 simplex vs. AR, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 4)
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 3, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar1_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar1_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar1_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar1_rho")
+
+mtext("AR-1 forecast skill (rho)", side = 1, outer = TRUE)
+mtext("Simplex forecast skill (rho)", side = 2, outer = TRUE)
+mtext("4-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 4 s-map vs. AR, fig.width = 8, echo = FALSE, results = "hide"}
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "ar1_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "ar1_rho", y_var = "smap_rho")
+
+mtext("AR-1 forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("4-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+# Plots (part 3)
+```{r compile results 3, echo = FALSE}
+get_results <- function(selected_tp = 2)
+{
+    return(do.call(rbind, lapply(sr_results, function(x) {
+        if(class(x) == "try-error")
+            return(NA)
+        
+        # pull out EDM performance
+        smap_temp <- x$smap_out[x$smap_out$tp == selected_tp,]
+        n <- sum(is.finite(x$rec))
+        smap_rho <- max(smap_temp$rho)
+        smap_mae <- min(smap_temp$mae)
+        arE_rho <- x$arE_out$rho[x$arE_out$tp == selected_tp]
+        arE_mae <- x$arE_out$mae[x$arE_out$tp == selected_tp]
+        
+        return(data.frame(n = n, 
+                          smap_rho = smap_rho, 
+                          smap_mae = smap_mae, 
+                          arE_rho = arE_rho, 
+                          arE_mae = arE_mae))
+    })))
+}
+
+```
+
+```{r plot tp 1 s-map vs. AR-E, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 1)
+idx_1 <- results$n < 20
+idx_2 <- (20 <= results$n) & (results$n < 30)
+idx_3 <- (30 <= results$n) & (results$n < 40)
+idx_4 <- 40 <= results$n
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "arE_rho", y_var = "smap_rho")
+
+mtext("AR-E forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("2-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 2 s-map vs. AR-E, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 2)
+idx_1 <- results$n < 20
+idx_2 <- (20 <= results$n) & (results$n < 30)
+idx_3 <- (30 <= results$n) & (results$n < 40)
+idx_4 <- 40 <= results$n
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "arE_rho", y_var = "smap_rho")
+
+mtext("AR-E forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("2-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 3 s-map vs. AR-E, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 3)
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "arE_rho", y_var = "smap_rho")
+
+mtext("AR-E forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("3-step ahead forecasts", side = 3, outer = TRUE)
+```
+
+```{r plot tp 4 s-map vs. AR-E, fig.width = 8, echo = FALSE, results = "hide"}
+results <- get_results(selected_tp = 4)
+
+par(mar = c(2, 2, 1, 1), oma = c(3, 3, 0, 0), 
+    mgp = c(2.5, 1, 0), mfrow = c(2, 2), pty = "s")
+
+make_panel(idx_1, "Length < 20", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_2, "20 <= Length 30", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_3, "30 <= Length < 40", x_var = "arE_rho", y_var = "smap_rho")
+make_panel(idx_4, "40 <= Length", x_var = "arE_rho", y_var = "smap_rho")
+
+mtext("AR-E forecast skill (rho)", side = 1, outer = TRUE)
+mtext("S-map forecast skill (rho)", side = 2, outer = TRUE)
+mtext("4-step ahead forecasts", side = 3, outer = TRUE)
+```

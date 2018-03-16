@@ -1,0 +1,59 @@
+ID        @ CODFAPL
+SP        @ Cod
+LATIN     @ Gadus morhua
+FAMILY    @ Gadidae
+CFAMILY   @ Codfishes
+ORDER     @ Gadiformes
+STOCK     @ Faroe Plateau
+SOURCE    @ Anon. 1990. Report of the North-Western Working Group. ICES Doc. C.M. 1990/Assess: 20.; Anon. 1991. Report of the North-Western Working Group. ICES Doc. C.M. 1991/Assesss: 21.; Anon. 1992. Report of the North-Western Working Group. ICES Doc. C.M. 1992/Assesss: 14.; Anon. 1993. Report of the North-Western Working Group. ICES Doc. C.M. 1993/Assess: 18.; LAND 1924-1960: Jones, B. W. The cod and the cod fishery at Faroe. Fishery Investigations. Series II Vol XXIV Number 5; LAND 1961-1973: Anon. 1977. Report of the working group on fish stocks at the faroes. ICES C.M. 1977/F:2.; ICES CM/1996 Assess:15
+COMMENTS  @ VPA, 1 year olds in actual numbers, REC from 1986 to 1991 uses weighted ave. prediction.
+FAGE      @ 3-7
+METHOD    @ SPA
+UNITSSB   @ Tonnes
+UNITREC   @ Thousands
+AGERECDAT @ 2
+UNITLAND  @ Tonnes
+EGGDIAM   @ 1.4 
+LHATCH    @ 3 
+LMETA     @ 24 
+DELTAL    @ 21 
+DELTAN    @ 14.7 
+LATITUDE  @ 62 00
+LONGITUDE @ -8 00
+MONTHSPA  @ 2-5 
+NATMORT   @ 0.20 
+F01       @ 0.15 
+FMAX      @ 0.38 
+FMED      @ 0.5 
+KGPRECF0  @ 19.76
+SPAWNLOC  @ Shelf 
+EGGTYPE   @ Oviparous, pelagic 
+FEEDTYPE  @ Demersal 
+SOURCEMAT @ Kristiansen, A., & Hansen, B. ICES C.M. 1990/G:50 
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ 4 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ . 

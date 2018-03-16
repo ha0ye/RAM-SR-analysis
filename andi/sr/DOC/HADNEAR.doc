@@ -1,0 +1,59 @@
+ID        @ HADNEAR
+SP        @ Haddock
+LATIN     @ Melanogrammus aeglefinus
+FAMILY    @ Gadidae
+CFAMILY   @ Codfishes
+ORDER     @ Gadiformes
+STOCK     @ North East Arctic
+SOURCE    @ Anon. 1996. Report of the Arctic Fisheries Working Group. ICES Doc. C.M. 1995/Assess:4. Anon. 1976. Report of thse North East Arctic Fisheries Working Group. ICES Doc. C.M. 1976/F: 10.; Anon. 1988. Report of the Arctic Fisheries Working Group. ICES Doc. C.M. 1988/Assess: 5.; Anon. 1990. Report of the Arctic Fisheries Working Group. ICES Doc. C.M. 1990/Assess: 4.; Anon. 1991. Report of the Arctic Fisheries Working Group. ICES Doc. C.M. 1991/Assess: 3.; Anon. 1993. Report of the Arctic Fisheries Working Group. ICES Doc. C.M. 1993/Assess: 1, Ref.: G.
+COMMENTS  @ In 1992 the stock definition and methods were changed.
+FAGE      @ 4-7
+METHOD    @ SPA
+UNITSSB   @ Tonnes
+UNITREC   @ Thousands
+AGERECDAT @ 1
+UNITLAND  @ Tonnes
+EGGDIAM   @ 1.43 
+LHATCH    @ 4 
+LMETA     @ 28 
+DELTAL    @ 24 
+DELTAN    @ 16.4 
+LATITUDE  @ 70 00
+LONGITUDE @ 14 00
+MONTHSPA  @ 1-7 
+NATMORT   @ 0.20 
+F01       @ 0.25 
+FMAX      @ 0.24 
+FMED      @ 0.35 
+KGPRECF0  @ 7.50
+SPAWNLOC  @ . 
+EGGTYPE   @ Oviparous, pelagic 
+FEEDTYPE  @ Demersal, 27-366m 
+SOURCEMAT @ . 
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ 6 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ . 

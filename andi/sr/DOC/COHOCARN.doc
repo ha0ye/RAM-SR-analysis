@@ -1,0 +1,59 @@
+ID        @ COHOCARN
+SP        @ Coho salmon
+LATIN     @ Oncorhynchus kisutch
+FAMILY    @ Salmonidae
+CFAMILY   @ Salmons
+ORDER     @ Salmoniformes
+STOCK     @ Carnation Creek, British Columbia
+SOURCE    @ Anderson and Scrivener, Can. Data. Rept. Fish Aquat. Sci. 890, 1992; updated by Peter Tchaplinski, BC Min. Forests pers. Com. Sept. 1997
+COMMENTS  @ 3.10 kilometers river length Note that broods 71-73 are in the 'pre-logging' period, 74-80 are during logging, and 81+ are post logging. Logging mostly increased productivity.
+FAGE      @ .
+METHOD    @ Count
+UNITSSB   @ Females
+UNITREC   @ Smolts
+AGERECDAT @ 1.19
+UNITLAND  @ . 
+EGGDIAM   @ . 
+LHATCH    @ . 
+LMETA     @ . 
+DELTAL    @ . 
+DELTAN    @ . 
+LATITUDE  @ 48 56
+LONGITUDE @ -125 00
+MONTHSPA  @ . 
+NATMORT   @ . 
+F01       @ . 
+FMAX      @ . 
+FMED      @ . 
+KGPRECF0  @ .
+SPAWNLOC  @ . 
+EGGTYPE   @ . 
+FEEDTYPE  @ . 
+SOURCEMAT @ . 
+LENMAT    @ . 
+LENMATM   @ . 
+LENMATF   @ . 
+AGEMAT    @ . 
+AGEMATM   @ . 
+AGEMATF   @ . 
+LENREC    @ . 
+AGEREC    @ . 
+AGERECM   @ . 
+AGERECF   @ . 
+SOURCEGRO @ . 
+LINFIN    @ . 
+k         @ . 
+to        @ . 
+LINFINM   @ . 
+kM        @ . 
+toM       @ . 
+LINFINF   @ . 
+kF        @ . 
+toF       @ . 
+SOURCEab  @ . 
+aLTWTPAR  @ . 
+bLTWTPAR  @ . 
+aLTWTPARM @ . 
+bLTWTPARM @ . 
+aLTWTPARF @ . 
+bLTWTPARF @ .
